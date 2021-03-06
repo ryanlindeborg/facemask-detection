@@ -1,4 +1,5 @@
-import cv2, os
+import cv2
+import os
 import numpy as np
 from keras.utils import np_utils
 from keras.models import Sequential
@@ -46,12 +47,12 @@ target = np.array(target)
 new_target = np_utils.to_categorical(target)
 
 # Saving the files
-np.save('data', data)
-np.save('target', new_target)
+np.save('./objects/data', data)
+np.save('./objects/target', new_target)
 
 # Build a neural network
-data = np.load('data.npy')
-target = np.load('target.npy')
+data = np.load('./objects/data.npy')
+target = np.load('./objects/target.npy')
 model = Sequential()
 model.add(Conv2D(200, (3, 3), input_shape=data.shape[1:]))
 model.add(Activation('relu'))
@@ -65,3 +66,11 @@ model.add(Dense(50, activation='relu'))
 model.add(Dense(2, activation='softmax'))
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['acc'])
 model.summary()
+
+# Split data in train and test
+train_data, test_data, train_target, test_target = train_test_split(data, target, test_size=0.1)
+
+# Train model and save checkpoint
+checkpoint = ModelCheckpoint('./model_checkpoints/model-{epoch:03d}.model', monitor='val_loss', verbose=0,
+                             save_best_only=True, mode='auto')
+history = model.fit(train_data, train_target, epochs=20, callbacks=[checkpoint], validation_split=0.2)
