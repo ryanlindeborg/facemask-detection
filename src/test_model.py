@@ -6,8 +6,8 @@ from keras.models import load_model
 img_size = 150
 
 # Load the best model
-model = load_model('./model_checkpoints/model-005.model')
-faceCascade = cv2.CascadeClassifier('./utils/haarcascade_frontalface_default.xml')
+model = load_model('./models/final/mask_model.h5')
+faceCascade = cv2.CascadeClassifier('./cascade_clasifier/haarcascade_frontalface_default.xml')
 video_capture = cv2.VideoCapture(0)
 labels_dict = {0: 'NO MASK', 1: 'MASK'}
 color_dict = {0: (0, 0, 255), 1: (0, 255, 0)}
