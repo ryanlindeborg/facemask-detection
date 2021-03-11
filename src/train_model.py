@@ -14,9 +14,6 @@ data_path = './data/'
 categories = os.listdir(data_path)
 labels = [i for i in range(len(categories))]
 label_dict = dict(zip(categories, labels))
-print(label_dict)
-print(categories)
-print(labels)
 
 # Make list for data and target
 img_size = 150
@@ -46,13 +43,7 @@ data = np.reshape(data, (data.shape[0], img_size, img_size, 1))
 target = np.array(target)
 new_target = np_utils.to_categorical(target)
 
-# Saving the files
-np.save('./objects/data', data)
-np.save('./objects/target', new_target)
-
 # Build a neural network
-data = np.load('./objects/data.npy')
-target = np.load('./objects/target.npy')
 model = Sequential()
 model.add(Conv2D(200, (3, 3), input_shape=data.shape[1:]))
 model.add(Activation('relu'))
@@ -68,10 +59,13 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['acc']
 model.summary()
 
 # Split data in train and test
-train_data, test_data, train_target, test_target = train_test_split(data, target, test_size=0.1, random_state=42)
+train_data, test_data, train_target, test_target = train_test_split(data, new_target, test_size=0.25, random_state=42)
 
 # Train model and save checkpoint
-checkpoint = ModelCheckpoint('./model_checkpoints/model-{epoch:03d}.model', monitor='val_loss', verbose=0,
+checkpoint = ModelCheckpoint('./models/checkpoints/model-{epoch:03d}.model', monitor='val_loss', verbose=1,
                              save_best_only=True, mode='auto')
-history = model.fit(train_data, train_target, epochs=10, callbacks=[checkpoint], validation_split=0.2,
+history = model.fit(train_data, train_target, epochs=7, callbacks=[checkpoint], validation_split=0.2,
                     use_multiprocessing=True, workers=12)
+
+# Save model
+model.save('./models/final/mask_model.h5')
