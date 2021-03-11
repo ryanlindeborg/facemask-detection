@@ -1,0 +1,13 @@
+name: facemask
+
+channels:
+  - conda-forge
+  - anaconda
+
+dependencies:
+  - python==3.8
+  - keras==2.4.3
+  - opencv==4.5.1
+  - scikit-learn==0.23.2
+  - matplotlib==3.3.4
+  - dvc==2.0.5
