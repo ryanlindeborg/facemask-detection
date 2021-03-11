@@ -1,4 +1,4 @@
-/data
 *.npy
 /objects
 /model_checkpoints
+/data
