@@ -1,13 +1,28 @@
+import tensorflow as tf
 import numpy as np
+import random as rn
+
+import multiprocessing
 import cv2
 import os
 
 from keras.layers import Dense, Activation, Dropout, Conv2D, Flatten, MaxPooling2D
-from keras.callbacks import ModelCheckpoint
+from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.models import Sequential
 from keras.utils import np_utils
 
 from sklearn.model_selection import train_test_split
+from matplotlib import pyplot as plt
+
+# Set random seed
+os.environ['PYTHONHASHSEED'] = '0'
+SEED = 1
+np.random.seed(SEED)
+rn.seed(SEED)
+tf.random.set_seed(SEED)
+num_CPU = 1
+num_GPU = 0
+max_cores = multiprocessing.cpu_count()
 
 # Use the file path where your dataset is stored
 data_path = './data/'
@@ -59,13 +74,25 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['acc']
 model.summary()
 
 # Split data in train and test
-train_data, test_data, train_target, test_target = train_test_split(data, new_target, test_size=0.25, random_state=42)
+train_data, test_data, train_target, test_target = train_test_split(data, new_target, test_size=0.15, random_state=42)
 
 # Train model and save checkpoint
+early_stopping = EarlyStopping(monitor='val_loss', patience=3, verbose=0, mode='min', restore_best_weights=True)
 checkpoint = ModelCheckpoint('./models/checkpoints/model-{epoch:03d}.model', monitor='val_loss', verbose=1,
                              save_best_only=True, mode='auto')
-history = model.fit(train_data, train_target, epochs=7, callbacks=[checkpoint], validation_split=0.2,
+history = model.fit(train_data, train_target, epochs=20, callbacks=[checkpoint, early_stopping], validation_split=0.2,
                     use_multiprocessing=True, workers=12)
+
+# Get training and validation metrics
+plt.plot(history.history['acc'], 'r', label='training accuracy')
+plt.plot(history.history['val_acc'], 'b', label='validation accuracy')
+plt.xlabel('epochs')
+plt.ylabel('accuracy')
+plt.legend()
+plt.show()
+
+# Evaluate model on test data
+print(model.evaluate(test_data, test_target))
 
 # Save model
 model.save('./models/final/mask_model.h5')
