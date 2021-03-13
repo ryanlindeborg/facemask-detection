@@ -1,4 +1,4 @@
-name: facemask
+name: facemask-gpu
 
 channels:
   - conda-forge
