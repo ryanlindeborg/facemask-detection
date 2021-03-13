@@ -7,6 +7,7 @@ To train this model, we use the data from the publicly available repository http
 If you have anaconda installed, you can run from the root of this repository:
 
     conda env update -f environment-cpu.yaml # if you don't have GPUs
+    conda env update -f environment-gpu.yaml
     conda activate facemask
 
 This will create a `facemask` environment with all the dependencies installed.
