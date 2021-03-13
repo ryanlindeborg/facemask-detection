@@ -31,7 +31,7 @@ labels = [i for i in range(len(categories))]
 label_dict = dict(zip(categories, labels))
 
 # Make list for data and target
-img_size = 150
+img_size = 200
 data = []
 target = []
 for category in categories:
