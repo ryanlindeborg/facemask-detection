@@ -1,10 +1,9 @@
 import tensorflow as tf
 import os
 
-from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from sklearn.model_selection import train_test_split
 
-from utils import create_model, prepare_data_to_model, read_images_from_data_folder
+from utils import create_model, prepare_data_to_model, read_images_from_data_folder, fit_model
 
 # Set random seed
 SEED = 1
@@ -23,11 +22,8 @@ model = create_model(input_shape=data.shape[1:])
 # Split data in train and test
 train_data, test_data, train_target, test_target = train_test_split(data, target, test_size=0.15, random_state=SEED)
 
-# Train model and save checkpoint
-early_stopping = EarlyStopping(monitor='val_loss', patience=3, verbose=0, mode='min', restore_best_weights=True)
-checkpoint = ModelCheckpoint('./models/checkpoints/model-{epoch:03d}.model', monitor='val_loss', verbose=1,
-                             save_best_only=True, mode='auto')
-history = model.fit(train_data, train_target, epochs=20, callbacks=[checkpoint, early_stopping], validation_split=0.2)
+# Train model
+model, history = fit_model(train_data, train_target, model)
 
 # Evaluate model on test data
 print(model.evaluate(test_data, test_target))
