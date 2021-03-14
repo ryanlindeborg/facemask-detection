@@ -3,6 +3,7 @@ import cv2
 import os
 
 from tensorflow.keras.layers import Dense, Activation, Dropout, Conv2D, Flatten, MaxPooling2D
+from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.models import Sequential
 
@@ -83,3 +84,30 @@ def create_model(input_shape):
     model.summary()
 
     return model
+
+
+def fit_model(data, target, model, n_epochs=20, **kwargs):
+    """Split data in train, validation and test and train model"""
+
+    # Set early stopping as a callback function
+    early_stopping = EarlyStopping(monitor='val_loss',
+                                   patience=3,
+                                   verbose=0,
+                                   mode='min',
+                                   restore_best_weights=True)
+
+    # Create model checkpoints as a callback function
+    checkpoint = ModelCheckpoint('./models/checkpoints/model-{epoch:03d}.model',
+                                 monitor='val_loss',
+                                 verbose=1,
+                                 save_best_only=True,
+                                 mode='auto')
+    # Fit model
+    history = model.fit(data,
+                        target,
+                        epochs=n_epochs,
+                        callbacks=[checkpoint, early_stopping],
+                        validation_split=0.2,
+                        **kwargs)
+
+    return model, history
