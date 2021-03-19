@@ -22,7 +22,7 @@ LABEL_WITHOUT_MASK = 0
 
 def crop_images_and_store_labels_from_kaggle_dataset(img_folder, annotation_folder, cropped_img_folder):
     # Will return dictionary with new image names and corresponding label
-    img_label_list_of_dict = {}
+    img_label_list_of_dict = []
     for img_file in os.listdir(img_folder):
         img_path = os.path.join(img_folder, img_file)
         original_img = Image.open(img_path)
