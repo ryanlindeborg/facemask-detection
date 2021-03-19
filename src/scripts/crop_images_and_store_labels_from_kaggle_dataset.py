@@ -4,15 +4,15 @@ import xml.etree.ElementTree as ET
 from src.scripts.csv_utils import create_labels_csv_from_dict
 
 # Ubuntu box
-# KAGGLE_IMAGES_FILEPATH = "/home/ryanlindeborg/projects/ml/facemask/data/kaggle-facemask-data/images"
-# KAGGLE_LABELS_FILEPATH = "/home/ryanlindeborg/projects/ml/facemask/data/kaggle-facemask-data/annotations"
-# CROPPED_IMG_FOLDER = "/home/ryanlindeborg/projects/ml/facemask/data/kaggle-facemask-data/cropped_images"
-# OUTPUT_LABELS_CSV_FILE_PATH = "/home/ryanlindeborg/projects/ml/facemask/code/output_labels.csv"
+KAGGLE_IMAGES_FILEPATH = "/home/ryanlindeborg/projects/ml/facemask/data/kaggle-facemask-data/images"
+KAGGLE_LABELS_FILEPATH = "/home/ryanlindeborg/projects/ml/facemask/data/kaggle-facemask-data/annotations"
+CROPPED_IMG_FOLDER = "/home/ryanlindeborg/projects/ml/facemask/data/kaggle-facemask-data/cropped_images"
+OUTPUT_LABELS_CSV_FILE_PATH = "/home/ryanlindeborg/projects/ml/facemask/code/output_labels.csv"
 # Mac local
-KAGGLE_IMAGES_FILEPATH = "/Users/ryanlindeborg/Desktop/dev/ml-learning/projects/facemask/kaggle-facemask-data/images"
-KAGGLE_LABELS_FILEPATH = "/Users/ryanlindeborg/Desktop/dev/ml-learning/projects/facemask/kaggle-facemask-data/annotations"
-CROPPED_IMG_FOLDER = "/Users/ryanlindeborg/Desktop/dev/ml-learning/projects/facemask/kaggle-facemask-data/cropped_images"
-OUTPUT_LABELS_CSV_FILE_PATH = "/Users/ryanlindeborg/Desktop/dev/ml-learning/projects/facemask/kaggle-facemask-data/output_labels.csv"
+# KAGGLE_IMAGES_FILEPATH = "/Users/ryanlindeborg/Desktop/dev/ml-learning/projects/facemask/kaggle-facemask-data/images"
+# KAGGLE_LABELS_FILEPATH = "/Users/ryanlindeborg/Desktop/dev/ml-learning/projects/facemask/kaggle-facemask-data/annotations"
+# CROPPED_IMG_FOLDER = "/Users/ryanlindeborg/Desktop/dev/ml-learning/projects/facemask/kaggle-facemask-data/cropped_images"
+# OUTPUT_LABELS_CSV_FILE_PATH = "/Users/ryanlindeborg/Desktop/dev/ml-learning/projects/facemask/kaggle-facemask-data/output_labels.csv"
 
 XML_FILE_EXTENSION = ".xml"
 PNG_FILE_EXTENSION = ".png"
