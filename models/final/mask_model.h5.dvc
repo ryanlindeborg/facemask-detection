@@ -1,4 +1,4 @@
 outs:
-- md5: c0973c5262f70f819b383808f50580b8
+- md5: 854876e65bc7b33e12156d13f170e6a2
   size: 79990440
   path: mask_model.h5
