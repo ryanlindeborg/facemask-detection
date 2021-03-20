@@ -86,7 +86,7 @@ def create_model(input_shape):
     return model
 
 
-def fit_model(data, target, model, n_epochs=20, **kwargs):
+def fit_model(data, target, model, n_epochs=20, model_checkpoint=True, **kwargs):
     """Split data in train, validation and test and train model"""
 
     # Set early stopping as a callback function
@@ -102,11 +102,17 @@ def fit_model(data, target, model, n_epochs=20, **kwargs):
                                  verbose=1,
                                  save_best_only=True,
                                  mode='auto')
+
+    if model_checkpoint:
+        callbacks_funcs = [checkpoint, early_stopping]
+    else:
+        callbacks_funcs = [early_stopping]
+
     # Fit model
     history = model.fit(data,
                         target,
                         epochs=n_epochs,
-                        callbacks=[checkpoint, early_stopping],
+                        callbacks=callbacks_funcs,
                         validation_split=0.2,
                         **kwargs)
 
