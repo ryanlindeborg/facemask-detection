@@ -9,4 +9,7 @@ data, target = prepare_data_to_model(data, target)
 model = load_model('./models/final/mask_model.h5')
 
 # Evaluate model on test data
-print(f"Final model accuracy: {model.evaluate(data, target)}")
+val_loss, val_acc = model.evaluate(data, target)
+print("Final model results:")
+print(f"Val loss: {val_loss}")
+print(f"Val acc: {val_acc}")
