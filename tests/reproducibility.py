@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 def check_reproducibility(n_repeat, seed):
 
     # Prepare data to ingest model
-    data, target = read_images_from_data_folder(data_path='./data/')
+    data, target = read_images_from_data_folder(data_path='./data/training_data/')
     data, target = prepare_data_to_model(data, target)
     train_data, test_data, train_target, test_target = train_test_split(data,
                                                                         target,
