@@ -55,7 +55,6 @@ def crop_images_and_store_labels_from_kaggle_dataset(img_folder, annotation_fold
             current_label_dict["img_name"] = cropped_img_name
             current_label_dict["label"] = label
             img_label_list_of_dict.append(current_label_dict)
-        break
 
     return img_label_list_of_dict
 
