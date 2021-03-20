@@ -36,7 +36,6 @@ def crop_images_and_store_labels_from_kaggle_dataset(img_folder, annotation_fold
         for object in root.findall('object'):
             object_count += 1
             label = object.find('name').text
-            label = LABEL_WITH_MASK if label == "with_mask" else LABEL_WITHOUT_MASK
             bbox = object.find("bndbox")
             x1 = int(bbox.find("xmin").text)
             x2 = int(bbox.find("xmax").text)
