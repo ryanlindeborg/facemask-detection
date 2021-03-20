@@ -22,7 +22,7 @@ def check_reproducibility(n_repeat, seed):
         os.environ['TF_DETERMINISTIC_OPS'] = '1'
         tf.random.set_seed(seed)
         model = create_model(input_shape=data.shape[1:])
-        model, history = fit_model(train_data, train_target, model, n_epochs=20)
+        model, history = fit_model(train_data, train_target, model, n_epochs=20, model_checkpoint=False, verbose=1)
         metrics_result = model.evaluate(test_data, test_target)
 
         results.append(metrics_result)
@@ -31,9 +31,10 @@ def check_reproducibility(n_repeat, seed):
     all_equal = all(elem == results[0] for elem in results)
 
     if all_equal:
-        print("PASS TEST : reproducibility achieved")
+        print("PASSED TEST : reproducibility achieved")
+        print(f"Loss and accuracy are : {results[0]}")
     else:
-        print("FAIL TEST : experiments are not reproducible")
+        print("FAILED TEST : experiments are not reproducible")
 
 
 def main():
