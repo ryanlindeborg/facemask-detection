@@ -13,7 +13,7 @@ tf.random.set_seed(SEED)
 os.environ['TF_DETERMINISTIC_OPS'] = '1'
 
 # Prepare data to ingest model
-data, target = read_images_from_data_folder(data_path='./data/training-data')
+data, target = read_images_from_data_folder(data_path='./data/training_data')
 data, target = prepare_data_to_model(data, target)
 
 # Build a neural network
