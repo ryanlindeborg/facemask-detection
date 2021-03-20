@@ -4,15 +4,15 @@ import xml.etree.ElementTree as ET
 from src.scripts.csv_utils import create_labels_csv_from_dict
 
 # Ubuntu box
-# KAGGLE_IMAGES_FILEPATH = "/home/ryanlindeborg/projects/ml/facemask/data/kaggle-facemask-data/images"
-# KAGGLE_LABELS_FILEPATH = "/home/ryanlindeborg/projects/ml/facemask/data/kaggle-facemask-data/annotations"
-# CROPPED_IMG_FOLDER = "/home/ryanlindeborg/projects/ml/facemask/data/kaggle-facemask-data/cropped_images"
-# OUTPUT_LABELS_CSV_FILE_PATH = "/home/ryanlindeborg/projects/ml/facemask/code/output_labels.csv"
+KAGGLE_IMAGES_FILEPATH = "/home/ryanlindeborg/projects/ml/facemask/data/kaggle-facemask-data/images"
+KAGGLE_LABELS_FILEPATH = "/home/ryanlindeborg/projects/ml/facemask/data/kaggle-facemask-data/annotations"
+CROPPED_IMG_FOLDER = "/home/ryanlindeborg/projects/ml/facemask/data/kaggle-facemask-data/cropped_images"
+OUTPUT_LABELS_CSV_FILE_PATH = "/home/ryanlindeborg/projects/ml/facemask/code/output_labels.csv"
 # Mac local
-KAGGLE_IMAGES_FILEPATH = "/Users/ryanlindeborg/Desktop/dev/ml-learning/projects/facemask/kaggle-facemask-data/images"
-KAGGLE_LABELS_FILEPATH = "/Users/ryanlindeborg/Desktop/dev/ml-learning/projects/facemask/kaggle-facemask-data/annotations"
-CROPPED_IMG_FOLDER = "/Users/ryanlindeborg/Desktop/dev/ml-learning/projects/facemask/kaggle-facemask-data/cropped_images"
-OUTPUT_LABELS_CSV_FILE_PATH = "/Users/ryanlindeborg/Desktop/dev/ml-learning/projects/facemask/kaggle-facemask-data/output_labels.csv"
+# KAGGLE_IMAGES_FILEPATH = "/Users/ryanlindeborg/Desktop/dev/ml-learning/projects/facemask/kaggle-facemask-data/images"
+# KAGGLE_LABELS_FILEPATH = "/Users/ryanlindeborg/Desktop/dev/ml-learning/projects/facemask/kaggle-facemask-data/annotations"
+# CROPPED_IMG_FOLDER = "/Users/ryanlindeborg/Desktop/dev/ml-learning/projects/facemask/kaggle-facemask-data/cropped_images"
+# OUTPUT_LABELS_CSV_FILE_PATH = "/Users/ryanlindeborg/Desktop/dev/ml-learning/projects/facemask/kaggle-facemask-data/output_labels.csv"
 
 XML_FILE_EXTENSION = ".xml"
 PNG_FILE_EXTENSION = ".png"
@@ -22,7 +22,7 @@ LABEL_WITHOUT_MASK = 0
 
 def crop_images_and_store_labels_from_kaggle_dataset(img_folder, annotation_folder, cropped_img_folder):
     # Will return dictionary with new image names and corresponding label
-    img_label_list_of_dict = {}
+    img_label_list_of_dict = []
     for img_file in os.listdir(img_folder):
         img_path = os.path.join(img_folder, img_file)
         original_img = Image.open(img_path)
@@ -36,7 +36,6 @@ def crop_images_and_store_labels_from_kaggle_dataset(img_folder, annotation_fold
         for object in root.findall('object'):
             object_count += 1
             label = object.find('name').text
-            label = LABEL_WITH_MASK if label == "with_mask" else LABEL_WITHOUT_MASK
             bbox = object.find("bndbox")
             x1 = int(bbox.find("xmin").text)
             x2 = int(bbox.find("xmax").text)
@@ -55,7 +54,6 @@ def crop_images_and_store_labels_from_kaggle_dataset(img_folder, annotation_fold
             current_label_dict["img_name"] = cropped_img_name
             current_label_dict["label"] = label
             img_label_list_of_dict.append(current_label_dict)
-        break
 
     return img_label_list_of_dict
 
