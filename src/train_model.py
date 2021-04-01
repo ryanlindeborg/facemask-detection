@@ -1,4 +1,6 @@
 import tensorflow as tf
+import numpy as np
+import random
 import os
 
 from sklearn.model_selection import train_test_split
@@ -8,9 +10,13 @@ from utils import create_model, prepare_data_to_model, read_images_from_data_fol
 # Set random seed
 SEED = 1
 tf.random.set_seed(SEED)
+np.random.seed(SEED)
+random.seed(SEED)
 
 # Deterministic run on gpu
+os.environ['TF_CUDNN_DETERMINISTIC'] = '1'
 os.environ['TF_DETERMINISTIC_OPS'] = '1'
+os.environ['PYTHONHASHSEED'] = '1'
 
 # Prepare data to ingest model
 data, target = read_images_from_data_folder(data_path='./data/training_data')
@@ -23,7 +29,7 @@ model = create_model(input_shape=data.shape[1:])
 train_data, test_data, train_target, test_target = train_test_split(data, target, test_size=0.15, random_state=SEED)
 
 # Train model
-model, history = fit_model(train_data, train_target, model)
+model, history = fit_model(train_data, train_target, model, model_checkpoint=False)
 
 # Evaluate model on test data
 print(model.evaluate(test_data, test_target))
