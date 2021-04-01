@@ -13,3 +13,4 @@ dependencies:
   - pip
   - pip:
       - tensorflow==2.4.1
+      - mtcnn
