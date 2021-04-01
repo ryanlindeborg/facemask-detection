@@ -5,6 +5,7 @@ import os
 from tensorflow.keras.layers import Dense, Activation, Dropout, Conv2D, Flatten, MaxPooling2D
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.metrics import AUC
 from tensorflow.keras.models import Sequential
 
 
@@ -80,7 +81,7 @@ def create_model(input_shape):
     model.add(Dropout(0.5))
     model.add(Dense(50, activation='relu'))
     model.add(Dense(2, activation='softmax'))
-    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['acc'])
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['acc', AUC(name='auc')])
     model.summary()
 
     return model
@@ -90,23 +91,23 @@ def fit_model(data, target, model, n_epochs=20, model_checkpoint=True, **kwargs)
     """Split data in train, validation and test and train model"""
 
     # Set early stopping as a callback function
-    early_stopping = EarlyStopping(monitor='val_loss',
-                                   patience=3,
-                                   verbose=0,
-                                   mode='min',
+    early_stopping = EarlyStopping(monitor='val_auc',
+                                   patience=5,
+                                   verbose=1,
+                                   mode='max',
                                    restore_best_weights=True)
 
     # Create model checkpoints as a callback function
     checkpoint = ModelCheckpoint('./models/checkpoints/model-{epoch:03d}.model',
-                                 monitor='val_loss',
+                                 monitor='val_auc',
                                  verbose=1,
                                  save_best_only=True,
-                                 mode='auto')
+                                 mode='max')
 
     if model_checkpoint:
         callbacks_funcs = [checkpoint, early_stopping]
     else:
-        callbacks_funcs = [early_stopping]
+        callbacks_funcs = early_stopping
 
     # Fit model
     history = model.fit(data,
