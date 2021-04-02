@@ -1,6 +1,8 @@
 import numpy as np
 import cv2
 
+from mtcnn.mtcnn import MTCNN
+
 
 def detect_faces_locations_mtcnn(frame, mtcnn_model, confidence_thershold=0.5):
     """Detect faces and locations using mtcnn model"""
@@ -119,8 +121,32 @@ def draw_bounding_boxes(frame, locs, confidences):
     return copy_frame
 
 
-def detect_faces_and_locations(frame, model_name, face_net):
+def load_face_model(model_name: str):
+    """
+    Load our serialized face detector model from disk
+
+    :param model_name: caffe or mtcnn
+    :return: trained face detection model
+    """
+
+    if model_name == 'caffe':
+        prototxt_path = "./face_clasifiers/deploy.prototxt"
+        weights_path = "./face_clasifiers/res10_300x300_ssd_iter_140000.caffemodel"
+        face_net = cv2.dnn.readNet(prototxt_path, weights_path)
+
+    elif model_name == 'mtcnn':
+        face_net = MTCNN()
+
+    else:
+        raise NotImplementedError(f'f{model_name} not available now')
+
+    return face_net
+
+
+def detect_faces_and_locations(frame, model_name):
     """Detect faces and locations in an image"""
+
+    face_net = load_face_model(model_name)
 
     if model_name == 'caffe':
         faces, locs, confidences = detect_faces_locations_caffe(frame, face_net)
