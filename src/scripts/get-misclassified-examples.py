@@ -19,4 +19,4 @@ wrong_prediction_indices = [i for i, prediction_class in enumerate(prediction_cl
 wrong_prediction_img_paths = img_paths[wrong_prediction_indices]
 
 # Write wrong prediction image paths numpy array to a csv
-np.savetxt(WRONG_PREDICTIONS_CSV_FILE_PATH, wrong_prediction_img_paths, delimiter=",")
+np.savetxt(WRONG_PREDICTIONS_CSV_FILE_PATH, wrong_prediction_img_paths, delimiter=",", fmt="%s")
