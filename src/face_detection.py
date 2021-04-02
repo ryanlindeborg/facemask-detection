@@ -1,8 +1,6 @@
 import numpy as np
 import cv2
 
-from mtcnn.mtcnn import MTCNN
-
 
 def detect_faces_locations_mtcnn(frame, mtcnn_model, confidence_thershold=0.5):
     """Detect faces and locations using mtcnn model"""
@@ -135,6 +133,7 @@ def load_face_model(model_name: str):
         face_net = cv2.dnn.readNet(prototxt_path, weights_path)
 
     elif model_name == 'mtcnn':
+        from mtcnn.mtcnn import MTCNN
         face_net = MTCNN()
 
     else:
