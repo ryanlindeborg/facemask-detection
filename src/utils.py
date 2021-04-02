@@ -10,13 +10,29 @@ from tensorflow.keras.models import Sequential
 
 
 def preprocess_image(img, img_size):
-    """Read image and preprocess"""
+    """Convert to gray scale, resize and normalize"""
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     resized = cv2.resize(gray, (img_size, img_size))
     normalized = resized / 255
 
     return normalized
+
+
+def preprocess_training_data(data, img_size):
+    """Convert data (list of images) to numpy array and reshape data to ingest it to the model"""
+
+    # Preprocess all images
+    for i, img in enumerate(data):
+        data[i] = preprocess_image(img, img_size)
+
+    # Convert to numpy array
+    data = np.array(data)
+
+    # Reshaping data
+    data = np.reshape(data, (data.shape[0], img_size, img_size, 1))
+
+    return data
 
 
 def get_labels_from_data_path(data_path):
@@ -49,8 +65,10 @@ def read_images_from_data_folder(data_path):
 
     return data, target
 
+
 def read_images_and_image_paths_from_data_folder(data_path):
-    """Read all images in subfolders of data image and return corresponding list of image paths in addition to image data"""
+    """Read all images in subfolders of data image and return corresponding list of image paths in addition to image
+    data"""
 
     img_paths = []
     # Get labels
@@ -75,14 +93,7 @@ def read_images_and_image_paths_from_data_folder(data_path):
 def prepare_data_to_model(data, target, img_size=150):
     """Prepare all images in data folder to feed it in the model"""
 
-    # Preprocess all images
-    for i, img in enumerate(data):
-        data[i] = preprocess_image(img, img_size)
-
-    data = np.array(data)
-
-    # Reshaping data
-    data = np.reshape(data, (data.shape[0], img_size, img_size, 1))
+    data = preprocess_training_data(data, img_size)
     target = np.array(target)
     target = to_categorical(target)
 
