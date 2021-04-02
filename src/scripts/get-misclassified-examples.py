@@ -10,6 +10,7 @@ model = load_model('./models/final/mask_model.h5')
 
 # Predict on the test set, and compare to true labels to record the examples which our model classified incorrectly
 predictions = model.predict(data)
+prediction_classes = model.predict_classes(data)
 wrong_predictions = data[predictions != target]
 
 # indices = [i for i,v in enumerate(pred) if pred[i]!=y_test[i]]
