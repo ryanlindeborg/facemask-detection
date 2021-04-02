@@ -151,3 +151,46 @@ def fit_model(data, target, model, n_epochs=20, model_checkpoint=True, **kwargs)
                         **kwargs)
 
     return model, history
+
+
+def draw_bounding_boxes_and_confidences(frame, locs, confidences, change_color=True):
+    """Draw bounding boxes and confidence in image"""
+
+    # Keep original image intact
+    copy_frame = np.copy(frame)
+
+    for box, confidence in zip(locs, confidences):
+        (start_x, start_y, end_x, end_y) = box
+
+        # Format confidence from probability to percentage
+        text = f"{confidence * 100:.2f}%"
+
+        # Shift down 10 px y coordinate in case face detection occurs at the very top of the image
+        y = start_y - 10 if start_y - 10 > 10 else start_y + 10
+
+        # Change color
+        if change_color:
+            if confidence > 0.5:
+                color = (0, 255, 0)
+            else:
+                color = (0, 0, 255)
+        else:
+            color = (46, 134, 193)
+
+        # Draw rectangle in image
+        copy_frame = cv2.rectangle(img=copy_frame,
+                                   pt1=(start_x, start_y),
+                                   pt2=(end_x, end_y),
+                                   color=color,
+                                   thickness=2)
+
+        # Put text with confidence in image
+        copy_frame = cv2.putText(img=copy_frame,
+                                 text=text,
+                                 org=(start_x, y),
+                                 fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                                 fontScale=0.55,
+                                 color=color,
+                                 thickness=2)
+
+    return copy_frame

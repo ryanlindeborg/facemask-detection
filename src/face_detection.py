@@ -85,40 +85,6 @@ def detect_faces_locations_caffe(frame, face_net, confidence_threshold=0.5):
     return faces, locs, confidences
 
 
-def draw_bounding_boxes(frame, locs, confidences):
-    """Draw bounding boxes in image """
-
-    # Keep original image intact
-    copy_frame = np.copy(frame)
-
-    for box, confidence in zip(locs, confidences):
-        (start_x, start_y, end_x, end_y) = box
-
-        # Format confidence from probability to percentage
-        text = f"{confidence * 100:.2f}%"
-
-        # Shift down 10 px y coordinate in case face detection occurs at the very top of the image
-        y = start_y - 10 if start_y - 10 > 10 else start_y + 10
-
-        # Draw rectangle in image
-        copy_frame = cv2.rectangle(img=copy_frame,
-                                   pt1=(start_x, start_y),
-                                   pt2=(end_x, end_y),
-                                   color=(0, 0, 255),
-                                   thickness=2)
-
-        # Put text with confidence in image
-        copy_frame = cv2.putText(img=copy_frame,
-                                 text=text,
-                                 org=(start_x, y),
-                                 fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                                 fontScale=0.45,
-                                 color=(0, 0, 255),
-                                 thickness=2)
-
-    return copy_frame
-
-
 def load_face_model(model_name: str):
     """
     Load our serialized face detector model from disk
