@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 
 
-def detect_faces_locations_mtcnn(frame, mtcnn_model):
+def detect_faces_locations_mtcnn(frame, mtcnn_model, confidence_thershold=0.5):
     """Detect faces and locations using mtcnn model"""
 
     # Make model prediction
@@ -18,24 +18,26 @@ def detect_faces_locations_mtcnn(frame, mtcnn_model):
         bounding_box = person['box']
         confidence = person['confidence']
 
-        # Create x-y coordinates
-        start_x = bounding_box[0]
-        start_y = bounding_box[1]
-        end_x = bounding_box[0] + bounding_box[2]
-        end_y = bounding_box[1] + bounding_box[3]
+        if confidence > confidence_thershold:
 
-        # Extract the ROI
-        face = frame[start_y:end_y, start_x:end_x]
+            # Create x-y coordinates
+            start_x = bounding_box[0]
+            start_y = bounding_box[1]
+            end_x = bounding_box[0] + bounding_box[2]
+            end_y = bounding_box[1] + bounding_box[3]
 
-        # Add the face and bounding boxes to their respective lists
-        faces.append(face)
-        locs.append((start_x, start_y, end_x, end_y))
-        confidences.append(confidence)
+            # Extract the ROI
+            face = frame[start_y:end_y, start_x:end_x]
+
+            # Add the face and bounding boxes to their respective lists
+            faces.append(face)
+            locs.append((start_x, start_y, end_x, end_y))
+            confidences.append(confidence)
 
     return faces, locs, confidences
 
 
-def detect_faces_locations_caffe(frame, face_net, confidence_thershold=0.5):
+def detect_faces_locations_caffe(frame, face_net, confidence_threshold=0.5):
     """Detect faces and locations using caffe model"""
 
     # Construct a blob from a frame
@@ -62,7 +64,7 @@ def detect_faces_locations_caffe(frame, face_net, confidence_thershold=0.5):
         # Extract the confidence associated with the detection
         confidence = detections[0, 0, i, 2]
 
-        if confidence > confidence_thershold:
+        if confidence > confidence_threshold:
 
             # Compute the (x, y) coordinates of the bounding box for the object
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
