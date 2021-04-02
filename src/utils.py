@@ -49,6 +49,28 @@ def read_images_from_data_folder(data_path):
 
     return data, target
 
+def read_images_and_image_paths_from_data_folder(data_path):
+    """Read all images in subfolders of data image and return corresponding list of image paths in addition to image data"""
+
+    img_paths = []
+    # Get labels
+    label_dict = get_labels_from_data_path(data_path)
+
+    data = []
+    target = []
+    for category in label_dict.keys():
+        folder_path = os.path.join(data_path, category)
+        img_names = os.listdir(folder_path)
+
+        for img_name in img_names:
+            img_path = os.path.join(folder_path, img_name)
+            img = cv2.imread(img_path)
+            data.append(img)
+            target.append(label_dict[category])
+            img_paths.append(img_path)
+
+    return data, target, np.array(img_paths)
+
 
 def prepare_data_to_model(data, target, img_size=150):
     """Prepare all images in data folder to feed it in the model"""
