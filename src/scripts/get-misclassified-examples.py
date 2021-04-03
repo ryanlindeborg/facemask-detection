@@ -1,5 +1,5 @@
 from tensorflow.keras.models import load_model
-from utils import prepare_data_to_model, read_images_and_image_paths_from_data_folder
+from src.utils import prepare_data_to_model, read_images_and_image_paths_from_data_folder
 import numpy as np
 
 WRONG_PREDICTIONS_CSV_FILE_PATH = "./wrong_predictions_img_paths.csv"
