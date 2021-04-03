@@ -59,4 +59,4 @@ if __name__ == "__main__":
     get_examples_from_prediction(misclasssifed=True, predictions_csv_file_path=WRONG_PREDICTIONS_CSV_FILE_PATH)
     # Fetch correctly predicted image list
     get_examples_from_prediction(misclasssifed=False, predictions_csv_file_path=CORRECT_PREDICTIONS_CSV_FILE_PATH)
-    display_examples_from_prediction(misclasssifed=False)
+    display_examples_from_prediction(misclasssifed=False, frame_name="Image Prediction")

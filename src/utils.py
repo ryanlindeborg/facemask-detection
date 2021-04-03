@@ -195,11 +195,11 @@ def draw_bounding_boxes_and_confidences(frame, locs, confidences, change_color=T
 
     return copy_frame
 
-def display_loaded_cv2_images(data, indices=None):
+def display_loaded_cv2_images(data, indices=None, frame_name="Image"):
     if indices is not None:
         # Only fetch images at specified indices
         data = [data[i] for i in indices]
 
     for img in data:
-        cv2.imshow(img)
+        cv2.imshow(frame_name, img)
         cv2.waitKey(0)
