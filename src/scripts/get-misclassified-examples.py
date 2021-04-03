@@ -33,8 +33,8 @@ def get_examples_from_prediction(misclasssifed=True, data_file_path=DATA_FILE_PA
 
 def display_examples_from_prediction(misclasssifed=True, data_file_path=DATA_FILE_PATH, model_file_path=MODEL_FILE_PATH):
     # Prepare data to ingest model
-    data, target, img_paths = read_images_and_image_paths_from_data_folder(data_path=data_file_path)
-    data, target = prepare_data_to_model(data, target)
+    original_data, target, img_paths = read_images_and_image_paths_from_data_folder(data_path=data_file_path)
+    data, target = prepare_data_to_model(original_data, target)
 
     # Build a neural network
     model = load_model(model_file_path)
@@ -52,7 +52,7 @@ def display_examples_from_prediction(misclasssifed=True, data_file_path=DATA_FIL
         prediction_indices = [i for i, prediction_class in enumerate(prediction_classes) if
                               prediction_class == target_values[i]]
 
-    display_loaded_cv2_images(data=data, indices=prediction_indices, frame_name="Image Prediction")
+    display_loaded_cv2_images(data=original_data, indices=prediction_indices, frame_name="Image Prediction")
 
 if __name__ == "__main__":
     # Fetch incorrectly predicted image list
