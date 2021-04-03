@@ -52,11 +52,11 @@ def display_examples_from_prediction(misclasssifed=True, data_file_path=DATA_FIL
         prediction_indices = [i for i, prediction_class in enumerate(prediction_classes) if
                               prediction_class == target_values[i]]
 
-    display_loaded_cv2_images(data=data, indices=prediction_indices)
+    display_loaded_cv2_images(data=data, indices=prediction_indices, frame_name="Image Prediction")
 
 if __name__ == "__main__":
     # Fetch incorrectly predicted image list
     get_examples_from_prediction(misclasssifed=True, predictions_csv_file_path=WRONG_PREDICTIONS_CSV_FILE_PATH)
     # Fetch correctly predicted image list
     get_examples_from_prediction(misclasssifed=False, predictions_csv_file_path=CORRECT_PREDICTIONS_CSV_FILE_PATH)
-    display_examples_from_prediction(misclasssifed=False, frame_name="Image Prediction")
+    display_examples_from_prediction(misclasssifed=False)
