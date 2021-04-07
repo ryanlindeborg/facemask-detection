@@ -1,10 +1,10 @@
 from utils import preprocess_training_data
 
 
-def detect_mask(frame, model, img_size):
+def detect_mask(face_frames, model, img_size):
     """Return probability of having a mask"""
 
-    frame = preprocess_training_data(frame, img_size)
-    predictions = model.predict(frame)
+    face_frames = preprocess_training_data(face_frames, img_size)
+    predictions = model.predict(face_frames)
 
     return predictions
