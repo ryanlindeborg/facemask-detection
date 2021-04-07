@@ -85,41 +85,39 @@ def detect_faces_locations_caffe(frame, face_net, confidence_threshold=0.5):
     return faces, locs, confidences
 
 
-def load_face_model(model_name: str):
+def load_face_model(model_type: str):
     """
     Load our serialized face detector model from disk
 
-    :param model_name: caffe or mtcnn
+    :param model_type: caffe or mtcnn
     :return: trained face detection model
     """
 
-    if model_name == 'caffe':
+    if model_type == 'caffe':
         prototxt_path = "./face_clasifiers/deploy.prototxt"
         weights_path = "./face_clasifiers/res10_300x300_ssd_iter_140000.caffemodel"
         face_net = cv2.dnn.readNet(prototxt_path, weights_path)
 
-    elif model_name == 'mtcnn':
+    elif model_type == 'mtcnn':
         from mtcnn.mtcnn import MTCNN
         face_net = MTCNN()
 
     else:
-        raise NotImplementedError(f'f{model_name} not available now')
+        raise NotImplementedError(f'f{model_type} not available now')
 
     return face_net
 
 
-def detect_faces_and_locations(frame, model_name):
+def detect_faces_and_locations(frame, face_net, model_type):
     """Detect faces and locations in an image"""
 
-    face_net = load_face_model(model_name)
-
-    if model_name == 'caffe':
+    if model_type == 'caffe':
         faces, locs, confidences = detect_faces_locations_caffe(frame, face_net)
 
-    elif model_name == 'mtcnn':
+    elif model_type == 'mtcnn':
         faces, locs, confidences = detect_faces_locations_mtcnn(frame, face_net)
 
     else:
-        raise NotImplementedError(f'f{model_name} not available now')
+        raise NotImplementedError(f'f{model_type} not available now')
 
     return faces, locs, confidences
